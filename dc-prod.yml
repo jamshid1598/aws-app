@@ -28,10 +28,7 @@ services:
       - 5432:5432
 
   nginx:
-    # build: ./compose/prod/nginx/
-    build:
-      context: .
-      dockerfile: ./compose/prod/nginx/Dockerfile
+    build: ./compose/prod/nginx/
     volumes:
       - static_volume:/home/app/backend/static_root
       - media_volume:/home/app/backend/media_root

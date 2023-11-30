@@ -1,0 +1,74 @@
+version: '3.9'
+
+services:
+  backend:
+    container_name: awsapp_backend
+    build:
+      context: .
+      dockerfile: ./compose/prod/Dockerfile
+    image: 257996401114.dkr.ecr.eu-north-1.amazonaws.com/django-ec2:backend
+    command: gunicorn config.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - static_volume:/home/app/backend/static_root
+      - media_volume:/home/app/backend/media_root
+    expose:
+      - 8000
+    env_file:
+      - ./env_vars/prod/.env
+    # depends_on:
+    #   - db
+  
+  nginx-proxy:
+    container_name: nginx-proxy
+    build: nginx
+    image: 257996401114.dkr.ecr.eu-north-1.amazonaws.com/django-ec2:nginx-proxy
+    restart: always
+    ports:
+      - 443:443
+      - 80:80
+    volumes:
+      - static_volume:/home/app/backend/static_root
+      - media_volume:/home/app/backend/media_root
+      - certs:/etc/nginx/certs
+      - html:/usr/share/nginx/html
+      - vhost:/etc/nginx/vhost.d
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    depends_on:
+      - backend
+  acme-companion:
+    image: nginxproxy/acme-companion
+    env_file:
+      - ./env_vars/prod/.staging.proxy-companion
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - certs:/etc/nginx/certs
+      - html:/usr/share/nginx/html
+      - vhost:/etc/nginx/vhost.d
+      - acme:/etc/acme.sh
+    depends_on:
+      - nginx-proxy
+
+  # db:
+  #   image: postgres:15
+  #   container_name: awsapp_db
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data/
+  #   env_file:
+  #     - ./env_vars/prod/.db
+  #   ports:
+  #     - 5432:5432
+
+  # nginx:
+  #   build: ./compose/prod/nginx/
+  #   volumes:
+  #     - static_volume:/home/app/backend/static_root
+  #     - media_volume:/home/app/backend/media_root
+  #   ports:
+  #     - 1337:80
+  #   depends_on:
+  #     - backend
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:
