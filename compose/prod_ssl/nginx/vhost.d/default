@@ -1,0 +1,9 @@
+location /static/ {
+  alias /home/app/backend/static_root/;
+  add_header Access-Control-Allow-Origin *;
+}
+
+location /media/ {
+  alias /home/app/backend/media_root/;
+  add_header Access-Control-Allow-Origin *;
+}

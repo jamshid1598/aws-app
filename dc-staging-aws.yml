@@ -5,7 +5,7 @@ services:
     container_name: awsapp_backend
     build:
       context: .
-      dockerfile: ./compose/prod/Dockerfile
+      dockerfile: ./compose/prod_ssl/Dockerfile
     image: 257996401114.dkr.ecr.eu-north-1.amazonaws.com/django-ec2:backend
     command: gunicorn config.wsgi:application --bind 0.0.0.0:8000
     volumes:
@@ -15,10 +15,10 @@ services:
       - 8000
     env_file:
       - ./env_vars/prod/.env
-  
+
   nginx-proxy:
     container_name: nginx-proxy
-    build: ./compose/prod/nginx/
+    build: ./compose/prod_ssl/nginx/
     image: 257996401114.dkr.ecr.eu-north-1.amazonaws.com/django-ec2:nginx-proxy
     restart: always
     ports:
