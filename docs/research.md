@@ -1,0 +1,6 @@
+1 - [Dockerizing Django with Postgres, Gunicorn, and Nginx](https://testdriven.io/blog/dockerizing-django-with-postgres-gunicorn-and-nginx/)
+2 - [Securing a Containerized Django Application with Let's Encrypt](https://testdriven.io/blog/django-lets-encrypt/)
+3 - [Deploying Django to AWS with Docker and Let's Encrypt](https://testdriven.io/blog/django-docker-https-aws/)
+4 - [Set up S3 and configure Django to store static and media files in a bucket, outside of the Docker volume](https://testdriven.io/blog/storing-django-static-and-media-files-on-amazon-s3)
+5 - [Set up a CI/CD pipeline on GitLab](https://testdriven.io/blog/deploying-django-to-ec2-with-docker-and-gitlab/)
+6 - [Configure a containerized Django app running on an EC2 instance to send logs to Amazon CloudWatch](https://testdriven.io/blog/django-logging-cloudwatch/)
